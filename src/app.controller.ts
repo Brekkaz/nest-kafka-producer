@@ -1,12 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { DataManagerService } from './data-manager/data-manager.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly dataManagerService: DataManagerService) {}
 
   @Get()
   getHello(): string {
-    return this.appService.getHello();
+    this.dataManagerService.setUserDirectory({
+      userID: '123',
+      SocketID: 'socket1',
+    });
+    return 'surprise!';
   }
 }
