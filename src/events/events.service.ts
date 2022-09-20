@@ -32,6 +32,6 @@ export class EventsService implements OnModuleInit {
   }
 
   async onModuleInit() {
-    await this.getMessagePayloads();
+    //await this.getMessagePayloads();
   }
 }
