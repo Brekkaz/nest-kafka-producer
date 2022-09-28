@@ -1,25 +1,20 @@
 import { Controller, Get } from '@nestjs/common';
+import { DataManagerService } from './data-manager/data-manager.service';
 import { TestService } from './test/test.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly testService: TestService) {}
+  constructor(
+    private readonly testService: TestService,
+    private readonly dataManagerService: DataManagerService,
+  ) {}
 
   @Get()
   getHello(): string {
-    /*this.testService
-      .create({
-        id: 'test3',
-        name: 'test2',
-      })
-      .then(() => console.log('created'))
-      .catch((err) => console.log(err));*/
-
-    this.testService
-      .findAll()
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
+    this.dataManagerService.setUserDirectory({
+      userID: 'string',
+      SocketID: 'string',
+    });
     return 'surprise!';
   }
 }

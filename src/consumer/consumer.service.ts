@@ -22,7 +22,7 @@ export class ConsumerService implements OnApplicationShutdown {
   async consume(topic: ConsumerSubscribeTopic, config: ConsumerRunConfig) {
     const uuidV4 = randomUUID();
 
-    const groupIdString = `${process.env.APP_NAME}-${uuidV4}`;
+    const groupIdString = `${process.env.APP_NAME}`;
     console.log(`GroupIdKafkaConsumer: ${groupIdString}`);
 
     const consumer = this.kafka.consumer({
@@ -36,6 +36,7 @@ export class ConsumerService implements OnApplicationShutdown {
 
   async onApplicationShutdown() {
     for (const consumer of this.consumers) {
+      console.log('consumerOut: ', consumer);
       await consumer.disconnect;
     }
   }

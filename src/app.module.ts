@@ -5,14 +5,11 @@ import { ProtobufModule } from './protobuf/protobuf.module';
 import { DataManagerModule } from './data-manager/data-manager.module';
 
 import Configuration from './config/configuration';
-import { DataManagerService } from './data-manager/data-manager.service';
-import { ProtobufService } from './protobuf/protobuf.service';
-import { ProduccerService } from './producer/produccer.service';
 import { ConsumerModule } from './consumer/consumer.module';
-import { EventsService } from './events/events.service';
 import { AppController } from './app.controller';
 import { DynamooseModule } from 'nestjs-dynamoose';
 import { TestModule } from './test/test.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -27,7 +24,6 @@ import { TestModule } from './test/test.module';
       table?: TableOptionsOptional;
       logger?: boolean | LoggerService;*/
     }),
-    TestModule,
     ConfigModule.forRoot({
       load: [Configuration],
       expandVariables: true,
@@ -36,14 +32,10 @@ import { TestModule } from './test/test.module';
     ProtobufModule,
     DataManagerModule,
     ConsumerModule,
+    TestModule,
+    EventsModule,
   ],
   controllers: [AppController],
-  providers: [
-    DataManagerService,
-    ConfigService,
-    ProtobufService,
-    ProduccerService,
-    EventsService,
-  ],
+  providers: [ConfigService],
 })
 export class AppModule {}
