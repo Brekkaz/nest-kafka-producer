@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { IUserDirectory } from '../share/models/User';
 import { ProduccerService } from '../producer/produccer.service';
 import { ProtobufService } from '../protobuf/protobuf.service';
 import { randomUUID } from 'crypto';
@@ -11,25 +10,21 @@ export class DataManagerService {
     private protobufService: ProtobufService,
   ) {}
 
-  async setUserDirectory(UserInformationDirectory: IUserDirectory) {
+  async triggerTopic(topic: string, data: any) {
     try {
-      //console.log(UserInformationDirectory);
       const message = this.protobufService.generateProto(
-        'UserSocketConnected',
-        {
-          UserID: UserInformationDirectory.userID + '',
-          UserSocketID: UserInformationDirectory.SocketID + '',
-        },
-      );
+        topic==process.env.KAFKA_TOPIC_SOCKER_USER_CONNECT?'UserSocketConnected':'MessagePayload', 
+        data
+        );
 
       const uuidV4 = randomUUID();
 
       await this.kafkaProduccerService.produce(
-        process.env.KAFKA_TOPIC_SOCKER_USER_CONNECT,
+        topic,
         [
           {
             headers: {
-              eventName: 'user-connected-socket',
+              eventName: topic,
               source: process.env.KAFKA_CLIENT_ID
                 ? process.env.KAFKA_CLIENT_ID
                 : 'test_client',

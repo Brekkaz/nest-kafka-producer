@@ -8,8 +8,6 @@ import Configuration from './config/configuration';
 import { ConsumerModule } from './consumer/consumer.module';
 import { AppController } from './app.controller';
 import { DynamooseModule } from 'nestjs-dynamoose';
-import { TestModule } from './test/test.module';
-import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -19,10 +17,6 @@ import { EventsModule } from './events/events.module';
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
         region: process.env.AWS_REGION,
       },
-      /*local?: boolean | string;
-      ddb?: DynamoDB;
-      table?: TableOptionsOptional;
-      logger?: boolean | LoggerService;*/
     }),
     ConfigModule.forRoot({
       load: [Configuration],
@@ -32,8 +26,6 @@ import { EventsModule } from './events/events.module';
     ProtobufModule,
     DataManagerModule,
     ConsumerModule,
-    TestModule,
-    EventsModule,
   ],
   controllers: [AppController],
   providers: [ConfigService],
