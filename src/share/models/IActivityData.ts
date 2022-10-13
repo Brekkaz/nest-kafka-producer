@@ -1,4 +1,4 @@
 export interface IActivityData {
-     originEvent: string;
-     userID: string;
-  }
+  originEvent: string;
+  userID: string;
+}
