@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ProduccerService } from '../producer/produccer.service';
 import { ProtobufService } from '../protobuf/protobuf.service';
 import { randomUUID } from 'crypto';
-import { ProtobufFile } from 'src/share/enums/ProtobufFile';
+import { ProtoName } from 'src/share/enums/protoName.enum';
 
 @Injectable()
 export class DataManagerService {
@@ -11,14 +11,11 @@ export class DataManagerService {
     private protobufService: ProtobufService,
   ) {}
 
-  async triggerTopic(topic: string, data: any) {
+  async triggerTopic(topic: string, proto: ProtoName, data: any) {
+    console.log('topic ', topic);
+
     try {
-      const message = this.protobufService.generateProto(
-        topic == process.env.KAFKA_TOPIC_SOCKER_USER_CONNECT
-          ? ProtobufFile.UserSocketConnected
-          : ProtobufFile.MessagePayload,
-        data,
-      );
+      const message = this.protobufService.generateProto(proto, data);
 
       const uuidV4 = randomUUID();
 

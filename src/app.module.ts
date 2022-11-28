@@ -6,6 +6,8 @@ import { DataManagerModule } from './data-manager/data-manager.module';
 
 import Configuration from './config/configuration';
 import { AppController } from './app.controller';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -13,9 +15,23 @@ import { AppController } from './app.controller';
       load: [Configuration],
       expandVariables: true,
     }),
-    //ProducerModule,
+    ProducerModule,
     ProtobufModule,
     DataManagerModule,
+    ClientsModule.register([
+      {
+        name: 'AUTH_PACKAGE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'protoGrpc',
+          protoPath: join(
+            __dirname,
+            'protobuf/proto-files-bifrost/protoGrpc.proto',
+          ),
+          url:'localhost:5000'
+        },
+      },
+    ]),
   ],
   controllers: [AppController],
   providers: [ConfigService],

@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
 
 import { join } from 'path';
 import * as protobufjs from 'protobufjs';
+import { ProtoName } from 'src/share/enums/protoName.enum';
 
 @Injectable()
 export class ProtobufService implements OnModuleInit {
@@ -14,11 +15,6 @@ export class ProtobufService implements OnModuleInit {
    * Root is a config to use root config to proto instance
    */
   private root;
-
-  /**
-   * Proto is a instance to configure proto generate instance
-   */
-  private Proto;
 
   /**
    * Init and bind onModuleInit to configure .proto file
@@ -36,9 +32,11 @@ export class ProtobufService implements OnModuleInit {
    */
   async onModuleInit() {
     try {
-      this.root = await protobufjs.load(
+      this.root = await protobufjs.load([
         join(__dirname, '/proto-files-bifrost/protoChat.proto'),
-      );
+        join(__dirname, '/proto-files-bifrost/protoExternal.proto'),
+        join(__dirname, '/proto-files-bifrost/protoGrpc.proto'),
+      ]);
     } catch (error) {
       this.logger.error({
         Title: 'Error init config of protobuf to message',
@@ -52,9 +50,9 @@ export class ProtobufService implements OnModuleInit {
    * @param payload json or object to send and generate buffer
    * @returns Buffer from data of payload
    */
-  generateProto(protoName: string, payload: any): Buffer {
+  generateProto(protoName: ProtoName, payload: any): Buffer {
     try {
-      const Proto = this.root.lookupType(`protoChat.${protoName}`);
+      const Proto = this.root.lookupType(protoName);
 
       const errorVerify = Proto.verify(payload);
       if (errorVerify) throw Error(errorVerify);
@@ -77,10 +75,10 @@ export class ProtobufService implements OnModuleInit {
    * @param payload json or object to send and generate buffer
    * @returns Buffer from data of payload
    */
-  decompressProto(protoName: string, buffer): any {
+  decompressProto(protoName: ProtoName, buffer): any {
     try {
       const messageBufferAscii = Buffer.from(buffer, 'ascii');
-      const Proto = this.root.lookupType(`protoChat.${protoName}`);
+      const Proto = this.root.lookupType(protoName);
 
       const debuf = Proto.decode(messageBufferAscii);
       const payload: any = debuf.toJSON();
