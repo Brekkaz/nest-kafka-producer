@@ -43,11 +43,11 @@ export class ProduccerService {
     const clientId = process.env.KAFKA_CLIENT_ID
       ? process.env.KAFKA_CLIENT_ID
       : 'test_client';
-    const username = process.env.KAFKA_USERNAME
-      ? process.env.KAFKA_USERNAME
+    const username = process.env.KAFKA_SCRAM_USERNAME
+      ? process.env.KAFKA_SCRAM_USERNAME
       : '';
-    const password = process.env.KAFKA_PASSWORD
-      ? process.env.KAFKA_PASSWORD
+    const password = process.env.KAFKA_SCRAM_PASSWORD
+      ? process.env.KAFKA_SCRAM_PASSWORD
       : '';
 
     /**
@@ -74,10 +74,7 @@ export class ProduccerService {
     /**
      * Config consumer of kafka
      */
-    this.producerKafka = this.kafkaInstance.producer({
-      idempotent: true,
-      maxInFlightRequests: 5,
-    });
+    this.producerKafka = this.kafkaInstance.producer();
   }
 
   /**

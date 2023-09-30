@@ -8,6 +8,7 @@ import Configuration from './config/configuration';
 import { AppController } from './app.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { App2Controller } from './app2.controller';
 
 @Module({
   imports: [
@@ -33,7 +34,7 @@ import { join } from 'path';
       },
     ]),
   ],
-  controllers: [AppController],
+  controllers: [AppController, App2Controller],
   providers: [ConfigService],
 })
 export class AppModule {}

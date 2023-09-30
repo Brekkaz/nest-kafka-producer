@@ -35,7 +35,6 @@ export class ProtobufService implements OnModuleInit {
       this.root = await protobufjs.load([
         join(__dirname, '/proto-files-bifrost/protoChat.proto'),
         join(__dirname, '/proto-files-bifrost/protoExternal.proto'),
-        join(__dirname, '/proto-files-bifrost/protoGrpc.proto'),
       ]);
     } catch (error) {
       this.logger.error({
@@ -46,10 +45,10 @@ export class ProtobufService implements OnModuleInit {
   }
 
   /**
-   * Function to generate buffer of data
-   * @param payload json or object to send and generate buffer
-   * @returns Buffer from data of payload
-   */
+ * Function to generate buffer of data
+ * @param payload json or object to send and generate buffer
+ * @returns Buffer from data of payload
+ */
   generateProto(protoName: ProtoName, payload: any): Buffer {
     try {
       const Proto = this.root.lookupType(protoName);
